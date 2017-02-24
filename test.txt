@@ -1,0 +1,5 @@
+add(12,23)
+
+int Add(int x, int y)
+    return x+y
+
