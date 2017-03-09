@@ -2,15 +2,16 @@
 
 
 from Graph import Graph
-from Node import Node
+
+
 
 
 def test_nodes():
     '''test the nodes'''
-    graph = Graph(5, 5)
-    node = Node.Node(1, 0).get_node(2, graph)
+    graph = Graph([5, 5])
+    node = graph.get_node([2, 1])
     node.print_info()
-    neighbors = get_neighbors(node, graph)
+    neighbors = graph.get_neighbors(node, graph)
     for node in neighbors:
         node.print_info()
 
