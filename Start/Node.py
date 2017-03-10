@@ -3,21 +3,21 @@
 
 class Node(object):
     '''Creates Nodes '''
-    def __init__(self, idee, val):
+    def __init__(self, val, idee):
         '''Node Constuctor'''
-        self.ide = idee
-        self.val = val
+        self.__ide = idee
+        self.__val = val
 
     def print_info(self):
         '''prints info'''
-        print "ID:", self.ide, "Value: ", self.val
+        print "ID:", self.__ide, "Value:", self.__val
 
     @property
     def value(self):
         '''gets value'''
-        return self.val
+        return self.__val
 
     @property
     def ident(self):
         '''gets id'''
-        return self.ide
+        return self.__ide
