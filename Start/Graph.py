@@ -28,17 +28,3 @@ class Graph(object):
     def in_boundary(self, _id):
         '''checks if node is in grid'''
         return 0 <= _id.ide[0] < self.width and 0 <= _id.ide[1] < self.height
-
-    def get_neighbors(self, node, graph):
-        '''Looks for the node's neighbors'''
-        right = [1, 0]
-        top = [0, 1]
-        left = [-1, 0]
-        down = [0, -1]
-        dirs = [right, top, left, down]
-        neighbors = []
-        for i in dirs:
-            nodekey = node.value[0] + i[0], node.value[1] + i[1]
-            if graph.get_node(nodekey) is not None:
-                neighbors.append(graph.get_node(nodekey))
-        return neighbors
