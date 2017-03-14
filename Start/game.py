@@ -53,12 +53,16 @@ while not DONE:
 
     # All drawing code happens after the for loop and but
     # inside the main while DONE==False loop.
+    
 
     # Clear the SCREEN and set the SCREEN background
     SCREEN.fill(WHITE)
+
     # Draw a circle
     for i in NODES:
         i.draw(SCREEN, font1)
+
+    current = NODES.index(0)
 
     # Go ahead and update the SCREEN with what we've drawn.
     # This MUST happen after all the other drawing commands.

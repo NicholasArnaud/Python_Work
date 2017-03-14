@@ -10,7 +10,7 @@ class Node(object):
 
     def print_info(self):
         '''prints info'''
-        print "ID:", self.__ide, "Value:", self.__val
+        print("ID:", self.__ide, "Value:", self.__val)
 
     @property
     def value(self):

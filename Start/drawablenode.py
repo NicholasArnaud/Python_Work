@@ -31,7 +31,7 @@ class DrawableNode(object):
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.surface = pygame.Surface((self.width, self.height))
         self.dirty = False
-        self._color =  (125, 255, 255)
+        self._color = (125, 255, 255)
 
     # properties
     @property
@@ -78,12 +78,13 @@ class DrawableNode(object):
 
     @property
     def color(self):
+        '''returns its color'''
         return self._color
 
     @color.setter
     # manual setting of colors will mark them dirty so they will stay
     def color(self, value):
-        white = (255, 255, 255)
+       # white = (255, 255, 255)
         red = (255, 0, 0)
 
         if value is red:
@@ -95,6 +96,7 @@ class DrawableNode(object):
         self._color = value
 
     def info(self):
+        '''shows info'''
         print("pos = ", self.pos)
         ids = ""
         for i in self.adjacents:
@@ -103,7 +105,8 @@ class DrawableNode(object):
         print("index: ", self.index)
 
     def draw(self, screen, font, init=True, text=True):
-        # pygame.draw.rect(screen, self._color, self.rect)
+        '''draws the screen'''
+        pygame.draw.rect(screen, self._color, self.rect)
         self.surface.fill(self._color)
         screen.blit(self.surface, self.screenpos)
         if self.walkable:
@@ -127,5 +130,3 @@ class DrawableNode(object):
             if init and text:
                 screen.blit(textf, textfpos)
                 screen.blit(textg, textgpos)
-
-   
