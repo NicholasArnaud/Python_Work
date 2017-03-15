@@ -14,9 +14,9 @@ class DrawableNode(object):
         self.adjacents = []
         self.parent = None
         self._walkable = True
-        self._g = 0
-        self._h = 0
-        self._f = 0
+        self._g_ = 0
+        self._h_ = 0
+        self._f_ = 0
 
         # drawing vars
         SIZE = 50
@@ -52,29 +52,29 @@ class DrawableNode(object):
 
     @property
     def f(self):
-        return self._f
+        return self._f_
 
     @property
     def g(self):
-        return self._g
+        return self._g_
 
     @property
     def h(self):
-        return self._h
+        return self._h_
 
     @f.setter
     def f(self, value):
-        self._f = value
+        self._f_ = value
 
     @g.setter
     def g(self, value):
-        self._g = value
-        self._f = self._g + self._h
+        self._g_ = value
+        self._f_ = self._g_ + self._h_
 
     @h.setter
     def h(self, value):
-        self._h = value
-        self._f = self._g + self._h
+        self._h_ = value
+        self._f_ = self._g_ + self._h_
 
     @property
     def color(self):
