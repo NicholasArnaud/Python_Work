@@ -11,12 +11,12 @@ class Graph(object):
         self._nodes = {}
         for i in range(0, self.width):
             for k in range(0, self.height):
-                nodekey = str(i), ",", str(k)
+                nodekey = str(i) + "," + str(k)
                 self._nodes[nodekey] = Node([i, k], len(self._nodes))
 
     def get_node(self, node):
         '''Gets the node'''
-        nodekey = str(node[0]), ',', str(node[1])
+        nodekey = str(node[0]) + ',' + str(node[1])
         if nodekey in self._nodes:
             return self._nodes[nodekey]
 

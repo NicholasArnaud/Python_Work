@@ -1,9 +1,8 @@
 '''Main file '''
 
-import astar
+
 from Graph import Graph
 
-__star__ = astar
 
 def test_nodes():
     '''test the nodes'''

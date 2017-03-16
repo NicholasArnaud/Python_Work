@@ -7,12 +7,16 @@ class Node(object):
         '''Node Constuctor'''
         self.__ide = idee
         self.__val = val
+        self.gscore = 0
+        self.hscore = 0
+        self.fscore = 0
         self.adjacents = []
 
     def print_info(self):
         '''prints info'''
         print("ID:", self.__ide, "Value:", self.__val)
 
+  # properties
     @property
     def value(self):
         '''gets value'''
@@ -22,10 +26,6 @@ class Node(object):
     def ident(self):
         '''gets id'''
         return self.__ide
-
-    @property
-    def adjacents(self):
-        return self.adjacents
 
     def get_neighbors(self, node, graph):
         '''Looks for the node's neighbors'''

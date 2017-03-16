@@ -1,67 +1,61 @@
 '''Alorithm for A*'''
 from Node import Node
-from drawablenode import DrawableNode
 from Graph import Graph
 
 
+
 class AStar(object):
-
+    '''Class for the A* algorithm'''
     def __init__(self):
-        self.adjacents = []
-        self.parent = None
-        self.walkable = True
-        self.gscore = 0
-        self.hscore = 0
-        self.fscore = self.gscore + self.hscore
-        self.startfrom = [Node]
-        self.openlist = [Node]
-        self.closedlist = [Node]
-
-    # properties
-    @property
-    def fscore(self):
-        return self.fscore
-
-    @property
-    def gscore(self):
-        return self.gscore
-
-    @property
-    def hscore(self):
-        return self.hscore
-
-    @fscore.setter
-    def fscore(self, value):
-        self.fscore = value
-
-    @gscore.setter
-    def gscore(self, value):
-        self.gscore = value
-
-    @hscore.setter
-    def hscore(self, value):
-        self.hscore = value
+        self.openlist = []
+        self.closedlist = []
+        self.currentnode = None
 
     # setup your search area
-
-    def astaralgorithm(self, start, goal):
+    def astaralgorithm(self, start, goal, graph):
+        '''The legendary A* algorithm'''
+        startnode = Node(start.value, start.ident)
         self.openlist.append(start)
+        self.currentnode = start
         while True:
-            if self.openlist.count != 0:
-                self.openlist.sort(self.openlist, key=lambda x: x.fscore)
-                currentnode = self.openlist[0]
-                self.closedlist.append(currentnode)
-                if currentnode == goal:
-                    self.startfrom = self.openlist[0]
-                    return
-                for node in currentnode.adjacents:
-                    if node in self.closedlist is False:
-                        continue
-                    if node not in self.openlist:
-                        self.openlist.append(node)
-                    node.gscore = currentnode.gscore
-                    node.fscore = currentnode.gscore + currentnode.hscore
+            self.sortlist()
+            startnode.get_neighbors(start, graph)
+            if goal in self.closedlist:
+                print "Complete"
+                return
+            for node in startnode.adjacents:
+                if node in self.closedlist is False:
+                    continue
+                if node not in self.openlist:
+                    self.openlist.append(node)
+                    updatevalue(node, goal)
 
+    def sortlist(self):
+        '''Sorts the open and closed lists'''
+        if self.openlist.count != None:
+            self.openlist.sort(self.openlist, key=lambda x: x.fscore)
+            self.closedlist.append(self.currentnode)
+
+def updatevalue(node, goal):
+    '''updates the G,H,F values'''
+    node.hscore = distancetracker(node, goal)
+    node.fscore = node.gscore + node.hscore
+
+def distancetracker(node, goal):
+    '''Returns the distance'''
+    return 10 * (abs(goal.value[0] - node.value[0]) + abs(goal.value[1] - node.value[1]))
+
+
+def test_nodes():
+    '''test the nodes'''
+    astar = AStar()
+    __graph__ = Graph([5, 5])
+    __node__ = __graph__.get_node([2, 1])
+    __node2__ = __graph__.get_node([3, 3])
+    astar.astaralgorithm(__node__, __node2__, __graph__)
+
+if __name__ == "__main__":
+    test_nodes()
 
 '''
     while True:
