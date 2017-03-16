@@ -21,28 +21,28 @@ class Graph(object):
             return self._nodes[nodekey]
 
 
-def get_neighbors(node, graph):
-    '''Looks for the node's neighbors'''
-    right = [1, 0]
-    top = [0, 1]
-    left = [-1, 0]
-    down = [0, -1]
-    dirs = [right, top, left, down]
-    neighbors = []
-    for i in dirs:
-        item1 = i[0] + node.value[0]
-        item2 = i[1] + node.value[1]
-        fetch_node = graph.get_node([item1, item2])
-        if fetch_node:
-            neighbors.append(fetch_node)
-    return neighbors
+    def get_neighbors(self, node, graph):
+        '''Looks for the node's neighbors'''
+        right = [1, 0]
+        top = [0, 1]
+        left = [-1, 0]
+        down = [0, -1]
+        dirs = [right, top, left, down]
+        neighbors = []
+        for i in dirs:
+            item1 = i[0] + node.value[0]
+            item2 = i[1] + node.value[1]
+            fetch_node = graph.get_node([item1, item2])
+            if fetch_node:
+                neighbors.append(fetch_node)
+        return neighbors
 
 
 def test_graph(graph):
     '''abc'''
     node = graph.get_node([1, 1])
     node.print_info()
-    neighbors = get_neighbors(node, graph)
+    neighbors = graph.get_neighbors(node, graph)
     for neighbor in neighbors:
         neighbor.print_info()
 

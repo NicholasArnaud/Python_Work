@@ -10,9 +10,9 @@ def test_nodes():
     graph = Graph([5, 5])
     node = graph.get_node([2, 1])
     node.print_info()
-    neighbors = __star__.get_neighbors(node, graph)
-    for node in neighbors:
-        node.print_info()
+    neighbors = node.get_neighbors(node, graph)
+    for nna in neighbors:
+        nna.print_info()
 
 
 if __name__ == '__main__':
