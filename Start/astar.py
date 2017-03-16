@@ -19,26 +19,32 @@ class AStar(object):
         self.currentnode = start
         while True:
             self.sortlist()
-            startnode.get_neighbors(start, graph)
-            if goal in self.closedlist:
+            self.currentnode = self.openlist[0]
+            self.openlist.remove(self.openlist[0])
+            neighbors = startnode.get_neighbors(self.currentnode, graph)
+            print self.currentnode.value
+            if self.currentnode is goal:
                 print "Complete"
-                return
-            for node in startnode.adjacents:
+                return False
+            for node in neighbors:
                 if node in self.closedlist is False:
                     continue
                 if node not in self.openlist:
-                    self.openlist.append(node)
                     updatevalue(node, goal)
+                    self.openlist.append(node)
 
     def sortlist(self):
         '''Sorts the open and closed lists'''
-        if self.openlist.count != None:
-            self.openlist.sort(self.openlist, key=lambda x: x.fscore)
-            self.closedlist.append(self.currentnode)
+        if len(self.openlist) != 0:
+            self.openlist.sort(key=lambda x: x.fscore)
+            self.closedlist.append(self.openlist[0])
+
+
 
 def updatevalue(node, goal):
     '''updates the G,H,F values'''
     node.hscore = distancetracker(node, goal)
+    node.gscore = 10
     node.fscore = node.gscore + node.hscore
 
 def distancetracker(node, goal):
@@ -49,13 +55,17 @@ def distancetracker(node, goal):
 def test_nodes():
     '''test the nodes'''
     astar = AStar()
-    __graph__ = Graph([5, 5])
-    __node__ = __graph__.get_node([2, 1])
-    __node2__ = __graph__.get_node([3, 3])
+    __graph__ = Graph([3, 3])
+    __node__ = __graph__.get_node([1, 1])
+    __node2__ = __graph__.get_node([2, 2])
     astar.astaralgorithm(__node__, __node2__, __graph__)
 
 if __name__ == "__main__":
     test_nodes()
+
+
+
+
 
 '''
     while True:

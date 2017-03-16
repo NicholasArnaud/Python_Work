@@ -1,73 +1,58 @@
-# Import a library of functions called 'pygame'
-import pygame
+import sys
+import pygame as game
+import astar
 
-import drawablenode
-import Graph as graph
-from drawablenode import *
-from Graph import Graph, Node
+class Game(object):
+    def __init__(self, graphpos):
+        posx = graphpos[0].width
+        posy = graphpos[0].height
+        self.parent = None
+        self.walkable = True
 
-# Initialize the game engine
-pygame.init()
+        # drawing vars
+        size = 50
+        self.width = size
+        self.height = size
+        self.index = (posx, posy)
+        self.xpos = (5 + self.width) * posx + 5
+        self.ypos = (5 + self.height) * posy + 5
+        self.pos = (self.width * posx, self.height * posy)
+        self.screenpos = (self.xpos, self.ypos)
+        self.rect = game.Rect(self.xpos, self.ypos, self.width, self.height)
+        self.dirty = False
+        self._color = (125, 255, 255)
+        self.screen = game.display.set_mode((self.pos))
 
-# Define the colors we will use in RGB format
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-PAD = (5, 5)
-ROWS = 25
-COLS = 25
-WIDTH = 30
-HEIGHT = 30
-SCREEN_WIDTH = COLS * (PAD[0] + WIDTH) + PAD[1]
-SCREEN_HEIGHT = ROWS * (PAD[0] + HEIGHT) + PAD[1]
-# Set the height and width of the SCREEN
+    def drawscreen(self):
+        '''draws the screen'''
+        done = False
+        clock = game.time.Clock()
+        self.screen.fill(self.colsel("black"))
+        game.init()
+        game.draw.lines(self.screen, self.colsel("red"), False, [(10, 10), (15, 20), (20, 10)], 1)
+        while not done:
+            # This limits the while loop to a max of 10 times per second.
+            # Leave this out and we will use all CPU we can.
+            clock.tick(10)
 
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-search_space = Graph([ROWS, COLS])
+            for event in game.event.get():  # User did something
+                if event.type == game.QUIT:  # If user clicked close
+                    done = True  # Flag that we are DONE so we exit this loop
+        game.quit()
 
-NODES = []
-for i in range(ROWS):
-    for j in range(COLS):
-        node = search_space.get_node([i, j])
-        NODES.append(DrawableNode(node))
-
-pygame.display.set_caption("Example code for the draw module")
-
-# Loop until the user clicks the close button.
-DONE = False
-CLOCK = pygame.time.Clock()
-
-pygame.font.init()
-font1 = pygame.font.Font(None, 14)
-font2 = pygame.font.Font(None, 28)
-while not DONE:
-
-    # This limits the while loop to a max of 10 times per second.
-    # Leave this out and we will use all CPU we can.
-    CLOCK.tick(10)
-
-    for event in pygame.event.get():  # User did something
-        if event.type == pygame.QUIT:  # If user clicked close
-            DONE = True  # Flag that we are DONE so we exit this loop
-
-    # All drawing code happens after the for loop and but
-    # inside the main while DONE==False loop.
-
-    # Clear the SCREEN and set the SCREEN background
-    SCREEN.fill(WHITE)
-
-    # Draw a circle
-    for i in NODES:
-        i.draw(SCREEN, font1)
-
-    # Go ahead and update the SCREEN with what we've drawn.
-    # This MUST happen after all the other drawing commands.
-    bg = pygame.Surface((SCREEN.get_size()[0] / 3, SCREEN.get_size()[1] / 3))
-    bg.fill(BLACK)
-    textrect = bg.get_rect()
-    pygame.display.flip()
-
-# Be IDLE friendly
-pygame.quit()
+    def colsel(self, collor):
+        '''Chooses Color'''
+        if collor == "red":
+            return (255, 0, 0)
+        if collor == "green":
+            return (0, 255, 0)
+        if collor == "blue":
+            return (0, 0, 255)
+        if collor == "darkblue":
+            return (0, 0, 128)
+        if collor == "white":
+            return (255, 255, 255)
+        if collor == "black":
+            return (0, 0, 0)
+        if collor == "pink":
+            return (255, 200, 200)
