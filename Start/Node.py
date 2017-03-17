@@ -1,18 +1,5 @@
 '''Node creator'''
-import pygame
-from Drawable import Rectangle
-from Drawable import Circle
-from Drawable import Line
-from Drawable import Text
-from Drawable import WHITE
-from Drawable import BLACK
-from Drawable import GREEN
-from Drawable import BLUE
-from Drawable import RED
-from Drawable import YELLOW
 
-SIZE = WIDTH, HEIGHT = 1600, 900
-SCREEN = pygame.display.set_mode(SIZE)
 
 class Node(object):
     '''Creates Nodes '''
@@ -52,21 +39,3 @@ class Node(object):
             if graph.get_node(nodekey) is not None:
                 self.adjacents.append(graph.get_node(nodekey))
         return self.adjacents
-
-class NodeInformation(object):
-    '''Creates text to display to the window with a nodes gscore, hscore, and fscore'''
-    def __init__(self, position):
-        self.position = position
-
-    def drawinformation(self, node):
-        '''Updates the text element with the information of the node passed in'''
-        if(node != None):
-            gposition = self.position
-            hposition = [self.position[0], self.position[1] + 50]
-            fposition = [self.position[0], self.position[1] + 100]
-            gtext = Text(SCREEN, gposition, [WHITE, BLACK], "G Score: " + str(node.gscore), 25)
-            htext = Text(SCREEN, hposition, [WHITE, BLACK], "H Score:" + str(node.hscore), 25)
-            ftext = Text(SCREEN, fposition, [WHITE, BLACK], "F Score:" + str(node.fscore), 25)
-            gtext.draw()
-            htext.draw()
-            ftext.draw()

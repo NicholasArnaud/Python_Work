@@ -1,106 +1,97 @@
 import sys
-import pygame
+import pygame as game
+from Graph import Graph
 
-class GameLoop(object):
-    '''Controls the game loop and calcualtes delta time for the application'''
-    def __init__(self):
-        self.deltatime = 0.0
-        self.lasttick = 0.0
-        pygame.init()
+class Game(object):
+    def __init__(self, graphpos):
+        posx = graphpos.width
+        posy = graphpos.height
+        self.parent = None
+        self.walkable = True
 
-    def update(self):
-        '''Handles the execution of the application'''
-        self.calcdeltatime()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-                return False
-
-        pygame.display.flip()
-        pygame.display.flip()
-        return True
-
-    def calcdeltatime(self):
-        '''Calculates the delta time for the application'''
-        timer = pygame.time.get_ticks()
-        self.deltatime = (timer - self.lasttick)
-        self.lasttick = timer
-
-class AStarInteraction(object):
-    '''Handles all of the user interaction with the astar algorithm'''
-    def __init__(self, algorithm, gameloop):
-        self.gameloop = gameloop
-        self.algorithm = algorithm
-        self.states = {}
-        self.buttons = {}
-        self.timers = {}
-
-    def addbuttoncontrol(self, buttonname, state):
-        if not self.buttons.has_key(buttonname):
-            self.buttons[buttonname] = state
-            self.timers[buttonname] = 0.0
-
-    def addalgorithmstate(self, statename, state):
-        self.states[statename] = state
-
-    def update(self, deltatime):
-        userinput = self.getbuttonpressed()
-        clickednode = self.getnodeclicked()
-        if userinput == "ToggleInfoMode":
-            self.infomode(clickednode)
-        if clickednode != None:
-            self.changeenviorment(clickednode, userinput)
+        # drawing vars
+        size = 50
+        self.width = size
+        self.height = size
+        self.index = (posx, posy)
+        self.xpos = (5 + self.width) * posx + 5
+        self.ypos = (5 + self.height) * posy + 5
+        self.pos = (self.width * posx, self.height * posy)
+        self.screenpos = (self.xpos, self.ypos)
+        self.rect = game.Rect(self.xpos, self.ypos, self.width, self.height)
+        self.dirty = False
+        self._color = (125, 255, 255)
+        self.screen = game.display.set_mode((self.pos))
 
 
-    def buttonpressdelay(self):
-        for iterator in range(0, len(self.buttons)):
-            if self.buttons[iterator]:
-                self.timers[iterator] = self.timers[iterator] + self.gameloop.deltatime
-                if self.timers[iterator] > 400:
-                    self.timers[iterator] = 0
-                    self.buttons[iterator] = False
+    def drawscreen(self, graphnodes):
+        '''draws the screen'''
+        done = False
+        clock = game.time.Clock()
+        self.screen.fill(self.colsel("black"))
+        game.init()
+        while not done:
+            # This limits the while loop to a max of 10 times per second.
+            # Leave this out and we will use all CPU we can.
+            clock.tick(10)
+
+            game.draw.lines(self.screen, self.colsel("red"), False,
+                            [(10, 10), (15, 20), (20, 10)], 1)
+            font1 = game.font.Font(None, 14)
+            screen = game.display.set_mode((self.xpos+5, self.ypos+5))
+            for i in range(self.xpos):
+                for j in range(self.ypos):
+                    node = graphnodes.get_node([i, j])
+                    graphnodes.nodes.append(Game(node))
+
+            for i in graphnodes:
+                i.draw(screen, font1)
+                for event in game.event.get():  # User did something
+                    if event.type == game.QUIT:  # If user clicked close
+                        done = True  # Flag that we are DONE so we exit this loop
+            game.quit()
+
+    def colsel(self, collor):
+        '''Chooses Color'''
+        if collor == "red":
+            return (255, 0, 0)
+        if collor == "green":
+            return (0, 255, 0)
+        if collor == "blue":
+            return (0, 0, 255)
+        if collor == "darkblue":
+            return (0, 0, 128)
+        if collor == "white":
+            return (255, 255, 255)
+        if collor == "black":
+            return (0, 0, 0)
+        if collor == "pink":
+            return (255, 200, 200)
 
 
-    def infomode(self, node):
-        state = self.states.get("InfoMode", None)
-        if state != None:
-            self.states["InfoMode"] = not self.states["InfoMode"]
-            state = self.states.get("InfoMode", None)
-        if state:
-            self.algorithm.nodeinfo.drawinformation(node)
+        def draw(self, screen, font, init=True, text=True):
+            # pygame.draw.rect(screen, self._color, self.rect)
+            self.surface.fill(self._color)
+            screen.blit(self.surface, self.screenpos)
+            if self.walkable:
+                # create some text to go on the fill
 
-    def changeenviorment(self, node, action):
-        state = self.states.get("InfoMode", None)
-        if not state:
-            if action == "SetStart":
-                self.algorithm.setstartnode(node)
-            elif action == "SetWall":
-                self.algorithm.modifywall(node)
-            elif action == "SetGoal":
-                self.algorithm.setgoalnode(node)
+                # info to display
 
+                # render the text
 
-    def getbuttonpressed(self):
-        keys = pygame.key.get_pressed()
-        buttons = pygame.mouse.get_pressed()
-        if keys[pygame.K_i]:
-            self.buttons["I"] = True
-            return "ToggleInfoMode"
-        elif buttons[0]:
-            self.buttons["LeftMouse"] = True
-            return "SetStart"
-        elif buttons[1]:
-            self.buttons["MiddleMouse"] = True
-            return "SetWall"
-        elif buttons[2]:
-            self.buttons["RightMouse"] = True
-            return "SetGoal"
+                textf = font.render("F= " + str(self.f), True, (1, 1, 1))
+                textg = font.render("G= " + str(self.g) +
+                                    "H= " + str(self.h), True, (1, 1, 1))
 
-    def getnodeclicked(self):
-        for node in self.algorithm.graph.nodes:
-            mxpos, mypos = pygame.mouse.get_pos()
-            if node.visual.collisioncheck([mxpos, mypos]):
-                return node
-        return None
-        
+                # set it's position/parent
+                textfpos = (self.x, self.y)  # top left
+                textgpos = (self.x, self.y + self.height - 10)  # bot left
+
+                # center it
+
+                # draw the square
+                if init and text:
+                    screen.blit(textf, textfpos)
+                    screen.blit(textg, textgpos)
+

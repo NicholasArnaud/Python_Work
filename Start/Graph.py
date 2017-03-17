@@ -8,17 +8,17 @@ class Graph(object):
     def __init__(self, dims):
         self.width = dims[0]
         self.height = dims[1]
-        self._nodes = {}
+        self.nodes = {}
         for i in range(0, self.width):
             for k in range(0, self.height):
                 nodekey = str(i) + "," + str(k)
-                self._nodes[nodekey] = Node([i, k], len(self._nodes))
+                self.nodes[nodekey] = Node([i, k], len(self.nodes))
 
     def get_node(self, node):
         '''Gets the node'''
         nodekey = str(node[0]) + ',' + str(node[1])
-        if nodekey in self._nodes:
-            return self._nodes[nodekey]
+        if nodekey in self.nodes:
+            return self.nodes[nodekey]
 
 
     def get_neighbors(self, node, graph):
@@ -37,7 +37,6 @@ class Graph(object):
                 neighbors.append(fetch_node)
         return neighbors
 
-@property
 
 def test_graph(graph):
     '''abc'''
