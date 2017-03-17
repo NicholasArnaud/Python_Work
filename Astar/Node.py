@@ -10,6 +10,7 @@ class Node(object):
         self.hscore = 0
         self.fscore = 0
         self.adjacents = []
+        self.parent = None
 
     def neighbors(self, node, graph):
         '''Looks for the node's neighbors'''
@@ -23,3 +24,18 @@ class Node(object):
             if graph.get_node(nodekey) is not None:
                 self.adjacents.append(graph.get_node(nodekey))
         return self.adjacents
+
+    def shscore(self, goal):
+        '''Returns the distance'''
+        return  (abs(goal.xpos - self.xpos) + abs(goal.ypos - self.ypos))* 10
+
+
+    def sgscore(self, node):
+        '''Gets gscore'''
+        if self.parent is None:
+            if node.xpos == self.xpos or node.ypos == self.ypos:
+                node.gscore = 10
+            else:
+                node.gscore = 14
+            self.parent = node
+        #Needs more work
