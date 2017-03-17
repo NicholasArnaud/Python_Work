@@ -37,6 +37,7 @@ class Graph(object):
                 neighbors.append(fetch_node)
         return neighbors
 
+@property
 
 def test_graph(graph):
     '''abc'''
