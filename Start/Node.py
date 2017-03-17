@@ -11,6 +11,9 @@ from Drawable import BLUE
 from Drawable import RED
 from Drawable import YELLOW
 
+SIZE = WIDTH, HEIGHT = 1600, 900
+SCREEN = pygame.display.set_mode(SIZE)
+
 class Node(object):
     '''Creates Nodes '''
     def __init__(self, val, idee):
