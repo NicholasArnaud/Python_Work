@@ -22,9 +22,9 @@ class AStar(object):
             self.currentnode = self.openlist[0]
             self.openlist.remove(self.openlist[0])
             neighbors = startnode.get_neighbors(self.currentnode, graph)
-            print self.currentnode.value
+            print(self.currentnode.value)
             if self.currentnode is goal:
-                print "Complete"
+                print("Complete")
                 return False
             for node in neighbors:
                 if node in self.closedlist is False:

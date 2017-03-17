@@ -1,6 +1,6 @@
 import sys
 import pygame as game
-import astar
+from Graph import Graph
 
 class Game(object):
     def __init__(self, graphpos):
@@ -23,22 +23,36 @@ class Game(object):
         self._color = (125, 255, 255)
         self.screen = game.display.set_mode((self.pos))
 
-    def drawscreen(self):
+
+    def drawscreen(self, graphnodes):
         '''draws the screen'''
         done = False
         clock = game.time.Clock()
         self.screen.fill(self.colsel("black"))
         game.init()
-        game.draw.lines(self.screen, self.colsel("red"), False, [(10, 10), (15, 20), (20, 10)], 1)
         while not done:
             # This limits the while loop to a max of 10 times per second.
             # Leave this out and we will use all CPU we can.
             clock.tick(10)
-
+            game.draw.lines(self.screen, self.colsel("red"), False, [(10, 10), (15, 20), (20, 10)], 1)
+            self.drawnodesquares(graphnodes)
             for event in game.event.get():  # User did something
                 if event.type == game.QUIT:  # If user clicked close
                     done = True  # Flag that we are DONE so we exit this loop
         game.quit()
+
+
+    def drawnodesquares(self, graphnodes):
+        '''draws grid'''
+        font1 = game.font.Font(None, 14)
+        screen = game.display.set_mode((self.xpos+5, self.ypos+5))
+        for i in range(self.xpos):
+            for j in range(self.ypos):
+                node = graphnodes.get_node([i, j])
+                graphnodes.append(Game(node))
+
+        for i in graphnodes:
+            i.draw(screen, font1)
 
     def colsel(self, collor):
         '''Chooses Color'''
@@ -56,3 +70,32 @@ class Game(object):
             return (0, 0, 0)
         if collor == "pink":
             return (255, 200, 200)
+
+
+        def draw(self, screen, font, init=True, text=True):
+            # pygame.draw.rect(screen, self._color, self.rect)
+            self.surface.fill(self._color)
+            screen.blit(self.surface, self.screenpos)
+            if self.walkable:
+                # create some text to go on the fill
+
+                # info to display
+
+                # render the text
+
+                textf = font.render("F= " + str(self.f), True, (1, 1, 1))
+                textg = font.render("G= " + str(self.g) +
+                                    "H= " + str(self.h), True, (1, 1, 1))
+
+                # set it's position/parent
+                textfpos = (self.x, self.y)  # top left
+                textgpos = (self.x, self.y + self.height - 10)  # bot left
+
+                # center it
+
+                # draw the square
+                if init and text:
+                    screen.blit(textf, textfpos)
+                    screen.blit(textg, textgpos)
+
+

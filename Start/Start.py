@@ -12,7 +12,7 @@ def test_nodes():
     __node2__ = __graph__.get_node([5, 5])
     astar.astaralgorithm(__node__, __node2__, __graph__)
     start = Game([__graph__])
-    start.drawscreen()
+    start.drawscreen([__graph__])
 
 
 if __name__ == '__main__':
