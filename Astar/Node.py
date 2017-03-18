@@ -39,3 +39,5 @@ class Node(object):
                 node.gscore = 14
             self.parent = node
         #Needs more work
+
+    def sfscore(self, node):
