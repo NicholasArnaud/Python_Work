@@ -33,11 +33,29 @@ class Node(object):
     def sgscore(self, node):
         '''Gets gscore'''
         if self.parent is None:
+            self.parent = node
             if node.xpos == self.xpos or node.ypos == self.ypos:
                 node.gscore = 10
             else:
                 node.gscore = 14
             self.parent = node
-        #Needs more work
+        else:
+            tempg = 0
+            if self.parent.xpos == self.xpos or self.parent.ypos == self.ypos:
+                tempg = 10
+            else:
+                tempg = 14
+            if tempg < self.gscore:
+                self.gscore = tempg
+                self.parent.children.append(self)
 
-    def sfscore(self, node):
+    def sfscore(self):
+        '''sets the f score'''
+        self.fscore = self.gscore + self.hscore
+        return self.fscore
+
+    def updatescores(self, node, goal):
+        '''updates all scores'''
+        self.shscore(goal)
+        self.sgscore(node)
+        self.sfscore()

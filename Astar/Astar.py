@@ -2,13 +2,12 @@
 
 
 # setup your search area
-def algorithm(start, goal):
+def algorithm(start, goal, grid):
     '''The legendary A* algorithm'''
-    openlist = []
+    openlist = [start]
     closedlist = []
     camefrom = {}
     currentnode = None
-    openlist.append(start)
     currentnode = start
 
 
@@ -16,15 +15,27 @@ def algorithm(start, goal):
     while openlist != openlist.count(0):
         if currentnode == goal:
             return repath(goal, camefrom)
+        currentnode.neighbors(currentnode, grid)
+        currentnode.updatescores(currentnode, goal)
+        sort_list(grid)
+        currentnode = openlist[0]
         openlist.remove(currentnode)
         closedlist.append(currentnode)
-        sort_list(openlist, closedlist)
-        currentnode = openlist[0]
-        openlist.remove(openlist[0])
 
-        for node in currentnode.neighbors:
+
+        for node in currentnode.adjacents:
             if node in closedlist is False:
                 continue
+            currentnode.tempg = currentnode.g + node.g
+            if node not in openlist:
+                openlist.append(node)
+            else:
+                continue
+            node.parent = currentnode
+            node.hscore = node.shscore
+            node.gscore = node.sgscore
+            node.fscore = node.sfscore
+
 
 
 
@@ -37,8 +48,11 @@ def repath(camefrom, current):
     return total_path
 
 
-def sort_list(openlist, closedlist):
+def sort_list(grid):
     '''Sorts the open and closed lists'''
-    if len(openlist) != 0:
-        openlist.sort(key=lambda x: x.fscore)
-        closedlist.append(openlist[0])
+    for node in grid.nodelist:
+        for nodes in grid.nodelist:
+            if node.fscore < nodes.fscore:
+                tempnode = node
+                node = nodes
+                nodes = tempnode
