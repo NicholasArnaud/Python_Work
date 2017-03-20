@@ -4,37 +4,47 @@
 # setup your search area
 def algorithm(start, goal, grid):
     '''The legendary A* algorithm'''
-    openlist = [start]
+    openlist = []
     closedlist = []
     camefrom = {}
-    currentnode = None
     currentnode = start
 
+    for updatenodes in grid.nodelist:
+        updatenodes.updatescores(goal)
+    goal.updatescores(goal)
+    openlist.append(currentnode)
+    while openlist is not None:
 
-
-    while openlist != openlist.count(0):
+        #checks if the current node is at the goal and follows parent path
         if currentnode == goal:
             return repath(goal, camefrom)
-        currentnode.neighbors(currentnode, grid)
-        currentnode.updatescores(currentnode, goal)
-        sort_list(grid)
+
+        #gets the neighbors for the current node in the grid given
+        currentnode.get_neighbors(grid)
+        #assigns the current node to the first node in openlist
         currentnode = openlist[0]
+        #removes that node from the open list
         openlist.remove(currentnode)
+        #adds the new current node into the closed list
         closedlist.append(currentnode)
+        #updates the currentnodes f,g,h scores from the goal
+        currentnode.updatescores(goal)
+        #sortlist sorts the node list from grid by the 'f' score
+        sort_list(grid)
 
-
-        for node in currentnode.adjacents:
+        #loops through the adjacent nodes to check if they found the goal node
+        for node in currentnode.neighbors:
             if node in closedlist is False:
                 continue
-            currentnode.tempg = currentnode.g + node.g
+            #not fully understanding the tentative g score yet
+            currentnode.tempg = currentnode.gscore + node.gscore
+            #if the searched node is not in the open list yet it adds it to be checked
             if node not in openlist:
                 openlist.append(node)
             else:
+                #updates all the node's f,g,h scores in the grid
+                node.updatescores(goal)
                 continue
-            node.parent = currentnode
-            node.hscore = node.shscore
-            node.gscore = node.sgscore
-            node.fscore = node.sfscore
 
 
 

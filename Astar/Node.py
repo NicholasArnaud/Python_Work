@@ -1,5 +1,6 @@
 '''Node creator'''
 
+
 class Node(object):
     '''Creates Nodes '''
     def __init__(self, xposition, yposition):
@@ -9,31 +10,30 @@ class Node(object):
         self.gscore = 0
         self.hscore = 0
         self.fscore = 0
-        self.adjacents = []
+        self.neighbors = []
         self.parent = None
 
-    def neighbors(self, node, graph):
+    def get_neighbors(self, graph):
         '''Looks for the node's neighbors'''
         right = [1, 0]
         top = [0, 1]
         left = [-1, 0]
         down = [0, -1]
         dirs = [right, top, left, down]
-        for i in dirs:
-            nodekey = node.value[0] + i[0], node.value[1] + i[1]
-            if graph.get_node(nodekey) is not None:
-                self.adjacents.append(graph.get_node(nodekey))
-        return self.adjacents
+        for node in graph.nodelist:
+            for position in dirs:
+                if node.xpos == position[0] and node.ypos == position[1]:
+                    self.neighbors.append(node)
 
     def shscore(self, goal):
         '''Returns the distance'''
-        return  (abs(goal.xpos - self.xpos) + abs(goal.ypos - self.ypos))* 10
+        self.hscore = (abs(goal.xpos - self.xpos) + abs(goal.ypos - self.ypos))* 10
+        return  self.hscore
 
 
     def sgscore(self, node):
         '''Gets gscore'''
         if self.parent is None:
-            self.parent = node
             if node.xpos == self.xpos or node.ypos == self.ypos:
                 node.gscore = 10
             else:
@@ -54,8 +54,8 @@ class Node(object):
         self.fscore = self.gscore + self.hscore
         return self.fscore
 
-    def updatescores(self, node, goal):
+    def updatescores(self, goal):
         '''updates all scores'''
         self.shscore(goal)
-        self.sgscore(node)
+        self.sgscore(self)
         self.sfscore()
