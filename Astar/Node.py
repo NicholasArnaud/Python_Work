@@ -15,11 +15,15 @@ class Node(object):
 
     def get_neighbors(self, graph):
         '''Looks for the node's neighbors'''
-        right = [1, 0]
-        top = [0, 1]
-        left = [-1, 0]
-        down = [0, -1]
-        dirs = [right, top, left, down]
+        right = [self.xpos+1, self.ypos]
+        topleft = [self.xpos-1, self.ypos + 1]
+        top = [self.xpos, self.ypos + 1]
+        topright = [self.xpos+1, self.ypos + 1]
+        left = [self.xpos-1, self.ypos]
+        downleft = [self.xpos-1, self.ypos - 1]
+        down = [self.xpos, self.ypos - 1]
+        downright = [self.xpos + 1, self.ypos - 1]
+        dirs = [right, top, left, down, topleft, topright, downleft, downright]
         for node in graph.nodelist:
             for position in dirs:
                 if node.xpos == position[0] and node.ypos == position[1]:
