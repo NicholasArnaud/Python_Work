@@ -6,14 +6,13 @@ def algorithm(start, goal, grid):
     '''The legendary A* algorithm'''
     openlist = []
     closedlist = []
-    camefrom = []
     currentnode = start
     openlist.append(currentnode)
     while openlist is not None:
 
         #checks if the current node is at the goal and follows parent path
         if currentnode == goal:
-            return repath(goal, camefrom)
+            return repath(goal, start)
         #assigns the current node to the first node in openlist
         currentnode = openlist[0]
         #gets the neighbors for the current node in the grid given
@@ -45,16 +44,8 @@ def algorithm(start, goal, grid):
 
 
 
-
-def repath(camefrom, current):
+def repath(endnode, startnode):
     '''Rebuilds the path'''
-    total_path = [current]
-    while current in camefrom.Keys:
-        current = camefrom[current]
-        total_path.append(current)
-        print (current)
-    return total_path
-
 
 def sort_list(grid):
     '''Sorts the open and closed lists'''
