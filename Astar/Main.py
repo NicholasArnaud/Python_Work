@@ -5,7 +5,7 @@ from Graph import Graph
 from Node import Node
 
 start_node = Node(1, 1)
-end_node = Node(1,3)
+end_node = Node(1,2)
 graph = Graph([10, 10])
 
 Astar.algorithm(start_node, end_node, graph)

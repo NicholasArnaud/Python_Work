@@ -44,14 +44,14 @@ class Node(object):
                 node.gscore = 14
             self.parent = node
         else:
-            tempg = 0
-            if self.parent.xpos == self.xpos or self.parent.ypos == self.ypos:
+            tempg = self.gscore
+            if node.xpos == self.xpos or node.ypos == self.ypos:
                 tempg = 10
             else:
                 tempg = 14
             if tempg < self.gscore:
                 self.gscore = tempg
-                self.parent.children.append(self)
+                self.parent = node
 
     def sfscore(self):
         '''sets the f score'''
