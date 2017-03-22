@@ -2,10 +2,10 @@
 
 import Astar
 from Graph import Graph
-from Node import Node
+#from Node import Node
 
-start_node = Node(1, 1)
-end_node = Node(1,2)
 graph = Graph([10, 10])
 
-Astar.algorithm(start_node, end_node, graph)
+startnode = graph.nodelist[1]
+endnode = graph.nodelist[46]
+Astar.algorithm(startnode, endnode, graph)
