@@ -8,13 +8,16 @@ def algorithm(start, goal, grid):
     closedlist = []
     currentnode = start
     openlist.append(currentnode)
-    while openlist is not None:
+    while len(openlist) != 0:
 
-        #checks if the current node is at the goal and follows parent path
-        if currentnode == goal:
-            return retrace(currentnode)
+        #sortlist sorts the node list from grid by the 'f' score
+        sort_list(grid)
         #assigns the current node to the first node in openlist
         currentnode = openlist[0]
+        #adds the new current node into the closed list
+        closedlist.append(currentnode)
+        #removes that node from the open list
+        openlist.remove(currentnode)
         #gets the neighbors for the current node in the grid given
         currentnode.get_neighbors(grid)
 
@@ -34,12 +37,11 @@ def algorithm(start, goal, grid):
             neighbor.parent = currentnode
             neighbor.gscore = tentative_gscore
             neighbor.updatescores(goal)
-        #sortlist sorts the node list from grid by the 'f' score
-        sort_list(grid)
-        #removes that node from the open list
-        openlist.remove(currentnode)
-        #adds the new current node into the closed list
-        closedlist.append(currentnode)
+
+        #checks if the current node is at the goal and follows parent path
+        if currentnode == goal:
+            return retrace(currentnode)
+
     return False
 
 
