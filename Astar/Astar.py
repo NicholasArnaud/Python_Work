@@ -12,7 +12,7 @@ def algorithm(start, goal, grid):
 
         #checks if the current node is at the goal and follows parent path
         if currentnode == goal:
-            return repath(goal, start)
+            return retrace(currentnode)
         #assigns the current node to the first node in openlist
         currentnode = openlist[0]
         #gets the neighbors for the current node in the grid given
@@ -43,9 +43,17 @@ def algorithm(start, goal, grid):
     return False
 
 
+def retrace(node):
+    '''reconstructs the path'''
+    final_path = []
+    parentednode = node
+    while parentednode is not None:
+        final_path.append(parentednode)
+        parentednode = parentednode.parent
+    for node in final_path:
+        node.printnode()
+    return final_path
 
-def repath(endnode, startnode):
-    '''Rebuilds the path'''
 
 def sort_list(grid):
     '''Sorts the open and closed lists'''

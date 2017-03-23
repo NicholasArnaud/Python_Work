@@ -52,3 +52,7 @@ class Node(object):
         '''sets h, and f'''
         self.shscore(goal)
         self.sfscore()
+
+    def printnode(self):
+        '''prints node cooridinates'''
+        print(str(str(self.xpos)+","+str(self.ypos)))
