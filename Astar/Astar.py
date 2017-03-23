@@ -25,7 +25,7 @@ def algorithm(start, goal, grid):
         for neighbor in currentnode.neighbors:
             currentnode.sgscore(neighbor)
             neighbor.updatescores(goal)
-            if neighbor in closedlist:
+            if neighbor in closedlist or not neighbor.walkable:
                 continue
             tentative_gscore = currentnode.gscore + currentnode.sgscore(neighbor)
             #if the searched node is not in the open list yet it adds it to be checked

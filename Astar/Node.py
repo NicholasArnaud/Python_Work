@@ -12,6 +12,7 @@ class Node(object):
         self.fscore = 0
         self.neighbors = []
         self.parent = None
+        self.walkable = True
 
     def get_neighbors(self, graph):
         '''Looks for the node's neighbors'''
