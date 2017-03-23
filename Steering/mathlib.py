@@ -5,8 +5,6 @@ class vector(object):
     def __init__(self, posx, posy):
         self.xpos = posx
         self.ypos = posy
-        self.normalized = None
-        self.magnitude = None
 
 
     def __add__(self, other):
@@ -34,18 +32,16 @@ class vector(object):
 
     def scalarmult(self, scal):
         '''multiplies a vector by a scalar'''
-        tmp = vector(self.xpos * scal, self.ypos * scal)
+        tmp = vector((self.xpos * scal), (self.ypos * scal))
         return tmp
 
     def mag(self):
         '''gets the magnitude of a vector'''
-        self.magnitude = float(math.sqrt((self.xpos * self.xpos) + (self.ypos * self.ypos)))
-        return self.magnitude
+        return float(math.sqrt((self.xpos * self.xpos) + (self.ypos * self.ypos)))
 
     def normal(self):
         '''normalizes a vector'''
-        self.normalized = vector(self.xpos / self.mag(), self.ypos / self.mag())
-        return self.normalized
+        return vector(self.xpos / self.mag(), self.ypos / self.mag())
 
     def dotprod(self, avector):
         '''gets the dot product'''

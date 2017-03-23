@@ -2,6 +2,7 @@ import pygame
 from agent import agent
 from mathlib import vector
 
+
 # Initialize the game engine
 pygame.init()
 
@@ -45,10 +46,10 @@ while not DONE:
     # Clear the SCREEN and set the SCREEN background
     SCREEN.fill(BLACK)
     # Draw a circle
-    mousepos = pygame.mouse.get_pos()
-    pygame.draw.circle(SCREEN, WHITE, mousepos, 12)
+    __mousepos__ = pygame.mouse.get_pos()
+    pygame.draw.circle(SCREEN, WHITE, __mousepos__, 12)
     agent1 = agent(10, vector(100, 100))
-    agent1.steering(mousepos)
+    agent1.steering(__mousepos__)
     pygame.draw.circle(SCREEN, BLUE, (agent1.position.xpos, agent1.position.ypos), 5)
 
     # Go ahead and update the SCREEN with what we've drawn.
