@@ -7,10 +7,12 @@ def testvector(vector1, vector2):
     vector3 = vector1 - vector2
     vector1.mag()
     vector1.normal()
-    vectortest = vector1.scalarmult(2)
+    vector2.normal()
+    vectortest = vector1 * 2
+    vector1.print_info()
     vectortest.print_info()
 
 if __name__ == "__main__":
-    vectora = vector(2, 2)
-    vectorb = vector(1, 1)
+    vectora = vector([2, 2])
+    vectorb = vector([1, 1])
     testvector(vectora, vectorb)
