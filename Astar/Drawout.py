@@ -15,8 +15,8 @@ red = (255, 0, 0)
 yellow = (255, 255, 0)
 
 pad = (23, 23)
-columns = 6
-rows = 6
+columns = 10
+rows = 10
 width = 30
 height = 30
 
@@ -31,16 +31,19 @@ clock = game.time.Clock()
 
 game.font.init()
 
-startnode = search_space.nodelist[30]
-endnode = search_space.nodelist[35]
-search_space.nodelist[14].walkable = False
-search_space.nodelist[15].walkable = False
-search_space.nodelist[16].walkable = False
-search_space.nodelist[28].walkable = False
-search_space.nodelist[29].walkable = False
-search_space.nodelist[32].walkable = False
+startnode = search_space.nodelist[0]
+endnode = search_space.nodelist[99]
 search_space.nodelist[26].walkable = False
-search_space.nodelist[20].walkable = False
+search_space.nodelist[36].walkable = False
+search_space.nodelist[46].walkable = False
+search_space.nodelist[56].walkable = False
+search_space.nodelist[66].walkable = False
+search_space.nodelist[63].walkable = False
+search_space.nodelist[64].walkable = False
+search_space.nodelist[65].walkable = False
+#search_space.nodelist[29].walkable = False
+#search_space.nodelist[32].walkable = False
+#search_space.nodelist[20].walkable = False
 
 
 Astar.algorithm(startnode, endnode, search_space)

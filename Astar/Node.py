@@ -48,10 +48,9 @@ class Node(object):
     def sgscore(self, neighbor):
         '''Gets gscore'''
         if neighbor.xpos == self.xpos or neighbor.ypos == self.ypos:
-            neighbor.gscore = 10
+            return 10
         else:
-            neighbor.gscore = 14
-        return neighbor.gscore
+            return 14
 
     def sfscore(self):
         '''sets the f score'''
