@@ -2,6 +2,7 @@
 
 import Astar
 from Graph import Graph
+#from Node import Node
 
 graph = Graph([6, 6])
 

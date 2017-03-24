@@ -41,10 +41,14 @@ search_space.nodelist[66].walkable = False
 search_space.nodelist[63].walkable = False
 search_space.nodelist[64].walkable = False
 search_space.nodelist[65].walkable = False
-#search_space.nodelist[29].walkable = False
-#search_space.nodelist[32].walkable = False
-#search_space.nodelist[20].walkable = False
-
+search_space.nodelist[98].walkable = False
+search_space.nodelist[78].walkable = False
+search_space.nodelist[88].walkable = False
+search_space.nodelist[59].walkable = False
+search_space.nodelist[58].walkable = False
+search_space.nodelist[37].walkable = False
+search_space.nodelist[38].walkable = False
+search_space.nodelist[73].walkable = False
 
 Astar.algorithm(startnode, endnode, search_space)
 

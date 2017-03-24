@@ -10,6 +10,7 @@ def algorithm(start, goal, grid):
     openlist.append(currentnode)
     while len(openlist) != 0:
 
+
         #sortlist sorts the node list from grid by the 'f' score
         sort_list(grid)
         #assigns the current node to the first node in openlist
@@ -40,6 +41,8 @@ def algorithm(start, goal, grid):
             neighbor.parent = currentnode
             neighbor.gscore = tentative_gscore
             neighbor.updatescores(goal)
+
+
 
     return False
 
