@@ -1,18 +1,27 @@
 '''Node creator'''
-
+import pygame as game
 
 class Node(object):
     '''Creates Nodes '''
-    def __init__(self, xposition, yposition):
+    def __init__(self, positional):
         '''Node Constuctor'''
-        self.xpos = xposition
-        self.ypos = yposition
+        self.xpos = positional[0]
+        self.ypos = positional[1]
         self.gscore = 0
         self.hscore = 0
         self.fscore = 0
         self.neighbors = []
         self.parent = None
         self.walkable = True
+
+        size = 50
+        self.width = size
+        self.height = size
+        self.x = (5 + self.width) * self.xpos + 5
+        self.y = (5 + self.height) * self.ypos + 5
+        self.screenpos = (self.x, self.y)
+        self.surface = game.Surface((self.width, self.height))
+        self.color = (255, 255, 255)
 
     def get_neighbors(self, graph):
         '''Looks for the node's neighbors'''
@@ -56,4 +65,11 @@ class Node(object):
 
     def printnode(self):
         '''prints node cooridinates'''
-        print(str(str(self.xpos)+","+str(self.ypos)))
+        print str(str(self.xpos)+","+str(self.ypos))
+
+
+
+    def draw(self, screen):
+        # pygame.draw.rect(screen, self._color, self.rect)
+        self.surface.fill(self.color)
+        screen.blit(self.surface, self.screenpos)
