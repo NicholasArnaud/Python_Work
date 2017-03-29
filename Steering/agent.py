@@ -1,43 +1,60 @@
 '''Agent nodes'''
-from mathlib import vector
+import pygame
+import random
+from mathlib import Vector
+
 
 class agent(object):
     '''Agent class'''
     def __init__(self, maxvelocity, start):
+
+
         self.maxvelocity = maxvelocity #scalar
-        self.currentvelocity = vector([0, 0]) #vector
-        self.position = start
-        self.velocity = vector([0, 0])
+        self.currentvelocity = Vector([0, 0]) #Vector
+        self._velocity = Vector([0, -1])
+        self._position = start
+        self._mass = 1
+        self._force = Vector([1, 1])
+        self._headed = Vector([0, -1])
+        self._forward = self._headed
+        if self._velocity.magnitude > 20:
+            self._velocity = self._velocity * (1 / 20)
 
-
-    def seeking(self, targetvector):
+    def seeking(self, targetvector, deltatime):
         ''''Runs the seeking behavior'''
-        selfcreatedvector = targetvector - self.position
-        self.velocity = vector([(selfcreatedvector.xpos - self.position.xpos),
-                                (selfcreatedvector.ypos - self.position.ypos)])
-        dif = (vector.normal(targetvector) - vector.normal(self.currentvelocity))
-        self.velocity = vector.scalarmult(dif, self.maxvelocity)
-        self.velocity.print_info()
-        seek = self.velocity - self.currentvelocity
+        selfcreatedvector = targetvector - self._position
+        self._velocity = Vector.normal(self._position - selfcreatedvector) * self.maxvelocity
+        self._force = self._velocity - self.currentvelocity
+        self._velocity += self._force * deltatime
+        self._position += self._velocity * deltatime
+        self._headed = Vector.normal(self._velocity)
+
+        #follows the real world laws
+        self._force = self._force * deltatime
+        self._acceleration = self._force * (1 / self._mass)
+        self._velocity = self.currentvelocity + self._force * deltatime
+        self._direction = self._headed
+        self._forward = self._direction
+        if self._velocity.magnitude > 20:
+            self._velocity = self._velocity * (1 / 20)
+
+        seek = self._velocity - self.currentvelocity
         return seek
 
-    def head(self, velocity):
-        '''Drives agent which way to go'''
-        heading = self.maxvelocity/velocity
-        return heading
 
-    def add_force(self, deltatime):
-        self.position += self.currentvelocity * deltatime
-
-
-    def print_info(self):
+    def print_position(self):
         '''prints position'''
-        return self.position
+        return str(self._position)
 
 if __name__ == "__main__":
-    starter = vector([5, 5])
-    goal = vector([15, 15])
+    pygame.init()
+    c = pygame.time.Clock()
+    starter = Vector([5, 5])
+    goal = Vector([15, 15])
     firstagent = agent(5, starter)
+
     while firstagent.currentvelocity != firstagent.maxvelocity:
-        firstagent.currentvelocity += firstagent.seeking(goal)
-        firstagent.print_info()
+        milliseconds = c.tick(10)
+        deltatime = milliseconds / 1000
+        print(milliseconds)
+        firstagent.currentvelocity += firstagent.seeking(goal, deltatime)
