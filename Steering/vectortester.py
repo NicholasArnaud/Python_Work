@@ -1,5 +1,5 @@
 '''main file'''
-from mathlib import vector
+from mathlib import Vector
 
 def testvector(vector1, vector2):
     '''tests vector class'''
@@ -13,6 +13,6 @@ def testvector(vector1, vector2):
     vectortest.print_info()
 
 if __name__ == "__main__":
-    vectora = vector([2, 2])
-    vectorb = vector([1, 1])
+    vectora = Vector([2, 2])
+    vectorb = Vector([1, 1])
     testvector(vectora, vectorb)

@@ -19,9 +19,13 @@ class Vector(object):
     def __sub__(self, other):
         return Vector([self.xpos - other.xpos, self.ypos - other.ypos])
 
-    def __mul__(self, other):
-        '''multiply a Vector by a scalar value'''
-        return Vector([other * self.xpos, other * self.ypos])
+
+    def __mul__(self, rhs):
+        '''multiply a Vector by another or by a scalar value'''
+        if isinstance(rhs, Vector):
+            return Vector([self.xpos * rhs.xpos, self.ypos + rhs.ypos])
+        else:
+            return Vector([self.xpos * rhs, self.ypos * rhs])
 
     def __div__(self, other):
         '''divide a Vector by a scalar value'''

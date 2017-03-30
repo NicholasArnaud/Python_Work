@@ -15,45 +15,43 @@ class agent(object):
         self._position = start
         self._mass = 1
         self._force = Vector([1, 1])
-        self._headed = Vector([0, -1])
+        self._headed = Vector([0, 1])
         self._forward = self._headed
         if self._velocity.magnitude > 20:
             self._velocity = self._velocity * (1 / 20)
 
     def seeking(self, targetvector, deltatime):
         ''''Runs the seeking behavior'''
-        selfcreatedvector = targetvector - self._position
-        self._velocity = Vector.normal(self._position - selfcreatedvector) * self.maxvelocity
+        self._velocity = Vector.normal(targetvector - self._position) * self.maxvelocity
         self._force = self._velocity - self.currentvelocity
         self._velocity += self._force * deltatime
         self._position += self._velocity * deltatime
-        self._headed = Vector.normal(self._velocity)
+        return self
 
-        #follows the real world laws
-        self._force = self._force * deltatime
-        self._acceleration = self._force * (1 / self._mass)
-        self._velocity = self.currentvelocity + self._force * deltatime
+    def fleeing(self, targetvector, delt):
+        '''Runs the fleeing behavior'''
+        return self.seeking(targetvector, delt) * -1
+
+
+    def add_force(self):
+        '''adds force'''
+        self._force = self._force * delta_time
+        acceleration = self._force * (1 / self._mass)
+        self._velocity = self.currentvelocity + self._force * delta_time
         self._forward = self._headed
         if self._velocity.magnitude > 20:
             self._velocity = self._velocity * (1 / 20)
+        return self._force
 
-        seek = self._velocity - self.currentvelocity
-        return seek
-
-
-    def print_position(self):
-        '''prints position'''
-        return str(self._position)
 
 if __name__ == "__main__":
     pygame.init()
     c = pygame.time.Clock()
-    starter = Vector([5, 5])
-    goal = Vector([15, 15])
+    starter = Vector([400, 400])
+    goal = Vector([500, 600])
     firstagent = agent(5, starter)
 
     while firstagent._position != goal:
-        milliseconds = c.tick(10)
-        deltatime = milliseconds / 1000
-        print(deltatime)
-        firstagent.currentvelocity += firstagent.seeking(goal, deltatime)
+        delta_time = c.tick(3) / 1000.0
+        firstagent.seeking(goal, delta_time)
+        firstagent._position.print_info()
