@@ -31,5 +31,6 @@ class ConcreteGame(GameTemplate):
         if super(ConcreteGame, self)._startup():
             while self.update():
                 self.draw()
+
         super(ConcreteGame, self)._shutdown()
         
