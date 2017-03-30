@@ -50,9 +50,9 @@ class Vector(object):
             return Vector([vec.xpos / (1), vec.ypos / (1)])
         return Vector([vec.xpos / vec.magnitude, vec.ypos / vec.magnitude])
 
-    def dotprod(self, aVector):
+    def dotprod(self, avector):
         '''gets the dot product'''
-        return float((self.xpos * aVector.xpos) + (self.ypos * aVector.ypos))
+        return float((self.xpos * avector.xpos) + (self.ypos * avector.ypos))
 
     def print_info(self):
         '''Prints Vector coordinates'''

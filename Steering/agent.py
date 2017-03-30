@@ -33,8 +33,7 @@ class agent(object):
         self._force = self._force * deltatime
         self._acceleration = self._force * (1 / self._mass)
         self._velocity = self.currentvelocity + self._force * deltatime
-        self._direction = self._headed
-        self._forward = self._direction
+        self._forward = self._headed
         if self._velocity.magnitude > 20:
             self._velocity = self._velocity * (1 / 20)
 
@@ -53,8 +52,8 @@ if __name__ == "__main__":
     goal = Vector([15, 15])
     firstagent = agent(5, starter)
 
-    while firstagent.currentvelocity != firstagent.maxvelocity:
+    while firstagent._position != goal:
         milliseconds = c.tick(10)
         deltatime = milliseconds / 1000
-        print(milliseconds)
+        print(deltatime)
         firstagent.currentvelocity += firstagent.seeking(goal, deltatime)
