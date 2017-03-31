@@ -17,7 +17,7 @@ class GameTemplate(object):
         self.screen = game.display.set_mode((1280, 720))
         self.agentlist = []
         for i in range(0, 100):
-            self.agentlist.append(agent(50, Vector([i + 20, i + 10])))
+            self.agentlist.append(agent(100, Vector([i + 20, i + 10])))
 
     def _startup(self):
         '''do startup routines'''

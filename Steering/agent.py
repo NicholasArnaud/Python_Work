@@ -28,7 +28,6 @@ class agent(object):
         self._force = self._velocity - self.currentvelocity
         self._velocity += self._force * deltatime
         self.position += self._velocity * deltatime
-        self.position.print_info()
         return self
 
     def fleeing(self, targetvector, delt):
@@ -37,7 +36,6 @@ class agent(object):
         self._force = self._velocity - self.currentvelocity
         self._velocity += self._force * delt
         self.position -= self._velocity * delt
-        self.position.print_info()
         return self
 
     def wondering(self, distance, radius):
