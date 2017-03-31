@@ -1,5 +1,5 @@
 '''Entry Point'''
-
+from AstarTest import UnitTest
 import Astar
 from Graph import Graph
 
@@ -11,4 +11,8 @@ endnode = graph.nodelist[35]
 graph.nodelist[14].walkable = False
 graph.nodelist[28].walkable = False
 graph.nodelist[29].walkable = False
-Astar.algorithm(startnode, endnode, graph)
+Astar.astar(startnode, endnode, graph)
+
+#test = UnitTest("test.txt")
+#test.gentestcases()
+#a = test.testastar(Astar.astar)

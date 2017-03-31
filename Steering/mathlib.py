@@ -49,6 +49,7 @@ class Vector(object):
         '''multiplies a Vector by a scalar'''
         tmp = Vector([(vec.xpos * scal), (vec.ypos * scal)])
         return tmp
+
     @staticmethod
     def mag(vec):
         '''gets the magnitude of a Vector'''

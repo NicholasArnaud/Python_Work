@@ -2,7 +2,7 @@
 
 
 # setup your search area
-def algorithm(start, goal, grid):
+def astar(start, goal, grid):
     '''The legendary A* algorithm'''
     openlist = []
     closedlist = []

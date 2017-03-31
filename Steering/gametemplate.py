@@ -16,34 +16,48 @@ class GameTemplate(object):
         self.goal = Vector([50, 50])
         self.screen = game.display.set_mode((1280, 720))
         self.agentlist = []
-        for i in range(0, 100):
-            self.agentlist.append(agent(100, Vector([i + 20, i + 10])))
+        self.leftclick = False
+        self.rightclick = False
+        for i in range(0, 10):
+            self.agentlist.append(agent(500, Vector([i + 20, i + 10])))
 
     def _startup(self):
         '''do startup routines'''
         self.screen.fill(BLACK)
+
         return True
 
     def _update(self):
         '''input and time'''
         self.c = game.time.Clock()
-        self.delta_time = self.c.tick(60) / 1000.0
-
+        self.delta_time = self.c.tick(30) / 1000.0
         mouse_pos = game.mouse.get_pos()
+        if self.leftclick is False and self.rightclick is False:
+            for i in self.agentlist:
+                i.add_force(i.wondering(55, 15), self.delta_time)
+
+        elif self.leftclick is True:
+            for i in self.agentlist:
+                i.add_force(i.seeking(self.goal), self.delta_time)
+
+        elif self.rightclick is True:
+            for i in self.agentlist:
+                i.add_force(i.fleeing(self.goal), self.delta_time)
+
         for  event in game.event.get():
             if game.mouse.get_pressed()[0]:
-                for i in self.agentlist:
-                    i.seeking(self.goal, self.delta_time)
+                self.leftclick = True
+                self.rightclick = False
                 self.goal.xpos = mouse_pos[0]
                 self.goal.ypos = mouse_pos[1]
 
             if game.mouse.get_pressed()[1]:
-                for i in self.agentlist:
-                    i.wondering(15, 10)
+                self.leftclick = False
+                self.rightclick = False
 
             if game.mouse.get_pressed()[2]:
-                for i in self.agentlist:
-                    i.fleeing(self.goal, self.delta_time)
+                self.leftclick = False
+                self.rightclick = True
                 self.goal.xpos = mouse_pos[0]
                 self.goal.ypos = mouse_pos[1]
 
