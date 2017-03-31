@@ -12,12 +12,20 @@ class Vector(object):
         return Vector([self.xpos + other.xpos, self.ypos + other.ypos])
 
     def __iadd__(self, other):
-        self.xpos += other.xpos
-        self.ypos += other.ypos
-        return self
+        if isinstance(other, Vector):
+            self.xpos += other.xpos
+            self.ypos += other.ypos
+            return self
+        else:
+            self.xpos += other
+            self.ypos += other
+            return self
 
     def __sub__(self, other):
-        return Vector([self.xpos - other.xpos, self.ypos - other.ypos])
+        if isinstance(other, int):
+            return Vector([self.xpos - other, self.ypos - other])
+        else:
+            return Vector([self.xpos - other.xpos, self.ypos - other.ypos])
 
 
     def __mul__(self, rhs):

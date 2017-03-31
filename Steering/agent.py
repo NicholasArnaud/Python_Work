@@ -1,5 +1,6 @@
 '''Agent nodes'''
 import pygame
+import math
 from constants import *
 import random
 from mathlib import Vector
@@ -18,10 +19,8 @@ class agent(object):
         self._force = Vector([1, 1])
         self._headed = Vector([0, 1])
         self._forward = self._headed
-        if self._velocity.magnitude > 20:
-            self._velocity = self._velocity * (1 / 20)
 
-        self.surface = pygame.Surface((600, 600))
+        self.surface = pygame.Surface((600, 500))
 
     def seeking(self, targetvector, deltatime):
         ''''Runs the seeking behavior'''
@@ -34,12 +33,21 @@ class agent(object):
 
     def fleeing(self, targetvector, delt):
         '''Runs the fleeing behavior'''
-        self._velocity = Vector.normal(targetvector + self.position) / self.maxvelocity
-        self._force = self._velocity + self.currentvelocity
-        self._velocity -= self._force / delt
-        self.position -= self._velocity / delt
+        self._velocity = Vector.normal(targetvector - self.position) * self.maxvelocity
+        self._force = self._velocity - self.currentvelocity
+        self._velocity += self._force * delt
+        self.position -= self._velocity * delt
         self.position.print_info()
         return self
+
+    def wondering(self, distance, radius):
+        '''Runs the wondering behavior'''
+        center_circle = self._velocity.normal(self._velocity)
+        center_circle = center_circle * distance
+        displacement = Vector([0, 1]) * radius
+        wanderangle = (random.Random()*1) - (1*.5)
+        self.position.xpos = math.cos(wanderangle)* displacement.mag(displacement)
+        self.position.ypos = math.sin(wanderangle)* displacement.mag(displacement)
 
     def add_force(self):
         '''adds force'''
@@ -56,7 +64,6 @@ class agent(object):
         pointlist = [(self.position.xpos + 5, self.position.ypos),
                      (self.position.xpos, self.position.ypos - 10),
                      (self.position.xpos - 5, self.position.ypos)]
-        center = self.position
         self.surface.blit(surface, (int(self.position.xpos), int(self.position.ypos)))
         pygame.draw.polygon(surface, color, pointlist, 2)
 
