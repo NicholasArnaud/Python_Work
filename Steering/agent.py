@@ -18,41 +18,45 @@ class agent(object):
         self._headed = Vector([0, 1])
         self._forward = self._headed
         self._wanderangle = 0
+        self._displacement = Vector([0, 1])
+        self.acceleration = self._force * (1 / self._mass)
 
         self.surface = pygame.Surface((20, 20))
 
+
     def seeking(self, targetvector):
         ''''Runs the seeking behavior'''
-        self._velocity = Vector.normal(targetvector - self.position) * self.maxvelocity
-        self._headed = Vector.normal(self._velocity)
-        return self._force
+        self._displacement = targetvector - self.position
+        self._force = Vector.normal(self._displacement) * self.maxvelocity
+        self._headed = self._force - self._velocity
+        return self._headed
 
     def fleeing(self, targetvector):
         '''Runs the fleeing behavior'''
-        self._velocity = Vector.normal(targetvector - self.position) * self.maxvelocity
-        self._headed = Vector.normal(self._velocity)
-        return self._force * -1
+        self._displacement = targetvector - self.position
+        self._force = Vector.normal(self._displacement) * self.maxvelocity * -1
+        self._headed = self._force - self._velocity
+        return self._headed
 
     def wondering(self, distance, radius):
         '''Runs the wondering behavior'''
         center_circle = Vector.normal(self._velocity)
         center_circle = center_circle * distance
-        displacement = Vector([0, 1]) * radius
-        self._wanderangle = self._wanderangle + (random.randrange(0.0, 1.0)*1) - (1*.5)
-        displacement.xpos = math.cos(self._wanderangle)* Vector.mag(displacement)
-        displacement.ypos = math.sin(self._wanderangle)* Vector.mag(displacement)
-        wanderforce = center_circle + displacement
-        return wanderforce
+        self._displacement = Vector.normal(self._velocity)
+        self._displacement = Vector([0, 1]) * radius
+        self._wanderangle += (random.randrange(0.0, 1.0)*1.0) - (1.0*.5)
+        self._displacement.xpos = math.cos(self._wanderangle)* Vector.mag(self._displacement)
+        self._displacement.ypos = math.sin(self._wanderangle)* Vector.mag(self._displacement)
+        self._headed = center_circle + self._displacement
+        return self._headed
 
-    def add_force(self, force, deltatime):
+    def update_force(self, deltatime):
         '''adds force'''
-        force = force * 5
-        acceleration = force * (1 / self._mass)
-        self._force = acceleration * self._mass
-        self._velocity = acceleration * deltatime
-        self._forward = self._headed
-        if self._velocity.magnitude > 20:
-            self._velocity = self._velocity * (1 / 20)
+        self._force = self._force * 5
+        self.acceleration = self._force
+        self._velocity += self.acceleration * deltatime
+        if Vector.mag(self._velocity) > self.maxvelocity:
+            self._velocity = Vector.normal(self._velocity) * self.maxvelocity
         self.position += self._velocity * deltatime
         return self
 
@@ -73,5 +77,5 @@ if __name__ == "__main__":
 
     while firstagent.position != goal:
         delta_time = c.tick(3) / 1000.0
-        firstagent.seeking(goal, delta_time)
+        firstagent.seeking(goal)
         firstagent.position.print_info()

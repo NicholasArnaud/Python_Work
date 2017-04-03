@@ -19,7 +19,7 @@ class GameTemplate(object):
         self.leftclick = False
         self.rightclick = False
         for i in range(0, 10):
-            self.agentlist.append(agent(500, Vector([i + 20, i + 10])))
+            self.agentlist.append(agent(200, Vector([20, i * 25])))
 
     def _startup(self):
         '''do startup routines'''
@@ -34,15 +34,18 @@ class GameTemplate(object):
         mouse_pos = game.mouse.get_pos()
         if self.leftclick is False and self.rightclick is False:
             for i in self.agentlist:
-                i.add_force(i.wondering(55, 15), self.delta_time)
+                i.wondering(400, 400)
+                i.update_force(self.delta_time)
 
         elif self.leftclick is True:
             for i in self.agentlist:
-                i.add_force(i.seeking(self.goal), self.delta_time)
+                i.seeking(self.goal)
+                i.update_force(self.delta_time)
 
         elif self.rightclick is True:
             for i in self.agentlist:
-                i.add_force(i.fleeing(self.goal), self.delta_time)
+                i.fleeing(self.goal)
+                i.update_force(self.delta_time)
 
         for  event in game.event.get():
             if game.mouse.get_pressed()[0]:
@@ -67,11 +70,10 @@ class GameTemplate(object):
 
     def _draw(self):
         '''base draw'''
-        game.display.flip()
         self.screen.fill(BLACK)
         for i in self.agentlist:
-            agent.draw(i, self.screen, RED)
-
+            agent.draw(i, self.screen)
+        game.display.flip()
 
     def _shutdown(self):
         '''shutdown the game properly'''
