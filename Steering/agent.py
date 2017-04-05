@@ -20,7 +20,6 @@ class agent(object):
         self._wanderangle = 0
         self._displacement = Vector([0, 1])
         self.acceleration = self._force * (1 / self._mass)
-
         self.surface = pygame.Surface((20, 20))
 
 
@@ -38,12 +37,11 @@ class agent(object):
         self._headed = self._force - self._velocity
         return self._headed
 
-    def wondering(self, distance, radius):
+    def wandering(self, distance, radius):
         '''Runs the wondering behavior'''
         center_circle = Vector.normal(self._velocity)
         center_circle = center_circle * distance
-        self._displacement = Vector.normal(self._velocity)
-        self._displacement = Vector([0, 1]) * radius
+        self._displacement = Vector.normal(self._velocity) * radius
         self._wanderangle += (random.randrange(0.0, 1.0)*1.0) - (1.0*.5)
         self._displacement.xpos = math.cos(self._wanderangle)* Vector.mag(self._displacement)
         self._displacement.ypos = math.sin(self._wanderangle)* Vector.mag(self._displacement)
@@ -67,15 +65,3 @@ class agent(object):
                      (self.position.xpos - 5, self.position.ypos)]
         self.surface.blit(surface, (int(self.position.xpos), int(self.position.ypos)))
         pygame.draw.polygon(surface, color, pointlist, 2)
-
-if __name__ == "__main__":
-    pygame.init()
-    c = pygame.time.Clock()
-    starter = Vector([1, 0])
-    goal = Vector([1, 1])
-    firstagent = agent(5, starter)
-
-    while firstagent.position != goal:
-        delta_time = c.tick(3) / 1000.0
-        firstagent.seeking(goal)
-        firstagent.position.print_info()

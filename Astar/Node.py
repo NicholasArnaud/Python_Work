@@ -2,8 +2,9 @@
 
 class Node(object):
     '''Creates Nodes '''
-    def __init__(self, positional):
+    def __init__(self, guid, positional):
         '''Node Constuctor'''
+
         self.xpos = positional[0]
         self.ypos = positional[1]
         self.gscore = 0

@@ -34,7 +34,7 @@ class GameTemplate(object):
         mouse_pos = game.mouse.get_pos()
         if self.leftclick is False and self.rightclick is False:
             for i in self.agentlist:
-                i.wondering(400, 400)
+                i.wandering(400, 400)
                 i.update_force(self.delta_time)
 
         elif self.leftclick is True:
@@ -72,7 +72,7 @@ class GameTemplate(object):
         '''base draw'''
         self.screen.fill(BLACK)
         for i in self.agentlist:
-            agent.draw(i, self.screen)
+            agent.draw(i, self.screen, RED)
         game.display.flip()
 
     def _shutdown(self):
