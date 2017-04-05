@@ -44,6 +44,9 @@ class Vector(object):
             return True
         return False
 
+    def __str__(self):
+        return "<" + str(self.xpos) + "," + str(self.ypos) + ">"
+
     @staticmethod
     def scalarmult(vec, scal):
         '''multiplies a Vector by a scalar'''

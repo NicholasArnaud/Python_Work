@@ -18,7 +18,7 @@ class GameTemplate(object):
         self.agentlist = []
         self.leftclick = False
         self.rightclick = False
-        for i in range(0, 10):
+        for i in range(0, 1):
             self.agentlist.append(agent(200, Vector([20, i * 25])))
 
     def _startup(self):
@@ -34,8 +34,9 @@ class GameTemplate(object):
         mouse_pos = game.mouse.get_pos()
         if self.leftclick is False and self.rightclick is False:
             for i in self.agentlist:
-                i.wandering(400, 400)
+                i.wandering(400, 30)
                 i.update_force(self.delta_time)
+                print(str(i._headed))
 
         elif self.leftclick is True:
             for i in self.agentlist:
