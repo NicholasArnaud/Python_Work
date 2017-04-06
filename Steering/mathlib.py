@@ -9,7 +9,10 @@ class Vector(object):
         self.magnitude = 0
 
     def __add__(self, other):
-        return Vector([self.xpos + other.xpos, self.ypos + other.ypos])
+        if isinstance(other, Vector):
+            return Vector([self.xpos + other.xpos, self.ypos + other.ypos])
+        else:
+            return Vector([self.xpos + other, self.ypos + other])
 
     def __iadd__(self, other):
         if isinstance(other, Vector):
