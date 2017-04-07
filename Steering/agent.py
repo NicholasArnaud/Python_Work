@@ -65,6 +65,12 @@ class agent(object):
         self._force += Vector.normal(self._velocity)
         self.position += self._velocity * deltatime
 
+    def rotateimage(self, image, angle):
+        loc = image.get_rect().center  #rot_image is not defined 
+        rot_sprite = pygame.transform.rotate(image, angle)
+        rot_sprite.get_rect().center = loc
+        return rot_sprite
+
     def draw(self, surface, color):
         '''draws agent when called'''
         pointlist = [(self.position.xpos, self.position.ypos),
@@ -77,7 +83,7 @@ class agent(object):
 
         self.subsurface = pygame.transform.rotate(surface, -angle)
 
-        pygame.draw.polygon(surface, color, pointlist, 2)
+        self.rotateimage(pygame.draw.polygon(surface, color, pointlist, 2), -angle)
 
         #pygame.draw.line(surface, GREEN, (self.position.xpos, self.position.ypos),
          #                (self._force.xpos + self.position.xpos,
@@ -89,5 +95,4 @@ class agent(object):
 
         #pygame.draw.line(surface, YELLOW, (self.position.xpos, self.position.ypos),
                          #(self._forward.xpos, self._forward.ypos), 1)
-
         self.subsurface.blit(surface, (int(self.position.xpos), int(self.position.ypos)))
