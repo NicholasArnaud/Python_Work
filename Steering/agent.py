@@ -20,11 +20,14 @@ class agent(object):
         self.center_circle = Vector([0, 1])
         self._displacement = Vector([0, 1])
         self.acceleration = self._force * (1 / self._mass)
-        self.surface = pygame.Surface((20, 20), pygame.SRCALPHA, 32)
+        self.surface = pygame.Surface((20, 20))
         self._wanderangle = math.pi
         self._prevangle = math.pi
         self.subsurface = self.surface.copy()
-
+        self.pointlist = [(self.position.xpos, self.position.ypos),
+                     (self.position.xpos, self.position.ypos + 20),
+                     (self.position.xpos + 15, self.position.ypos + 10)]
+        
 
     def seeking(self, targetvector):
         ''''Runs the seeking behavior'''
@@ -65,34 +68,34 @@ class agent(object):
         self._force += Vector.normal(self._velocity)
         self.position += self._velocity * deltatime
 
-    def rotateimage(self, image, angle):
-        loc = image.get_rect().center  #rot_image is not defined 
-        rot_sprite = pygame.transform.rotate(image, angle)
-        rot_sprite.get_rect().center = loc
-        return rot_sprite
 
     def draw(self, surface, color):
         '''draws agent when called'''
-        pointlist = [(self.position.xpos, self.position.ypos),
-                     (self.position.xpos, self.position.ypos + 20),
-                     (self.position.xpos + 20, self.position.ypos)]
+        
 
         angle = math.atan2(self._velocity.ypos, self._velocity.xpos) * 180 / math.pi
         if angle < 0:
-            angle = 360 + angle
+            angle += 360
 
-        self.subsurface = pygame.transform.rotate(surface, -angle)
+        pygame.draw.polygon(self.surface, color, self.pointlist, 2)
+        #pygame.draw.lines(self.surface, (100,100,100), True, pointlist, 2)
 
-        self.rotateimage(pygame.draw.polygon(surface, color, pointlist, 2), -angle)
 
-        #pygame.draw.line(surface, GREEN, (self.position.xpos, self.position.ypos),
-         #                (self._force.xpos + self.position.xpos,
-          #                self._force.ypos + self.position.ypos), 1)
+        pygame.draw.line(surface, GREEN, (self.position.xpos + 10, self.position.ypos + 10),
+                         (self._force.xpos / 5 + self.position.xpos,
+                          self._force.ypos / 5 + self.position.ypos), 1)
 
-        pygame.draw.line(surface, CYAN, (self.position.xpos, self.position.ypos),
+        pygame.draw.line(surface, CYAN, (self.position.xpos + 10, self.position.ypos + 10),
                          (self._velocity.xpos + self.position.xpos,
                           self._velocity.ypos + self.position.ypos), 1)
 
-        #pygame.draw.line(surface, YELLOW, (self.position.xpos, self.position.ypos),
-                         #(self._forward.xpos, self._forward.ypos), 1)
-        self.subsurface.blit(surface, (int(self.position.xpos), int(self.position.ypos)))
+        #pygame.draw.line(surface, YELLOW, (self.position.xpos + 10, self.position.ypos + 10),
+        #                 (self._forward.xpos, self._forward.ypos), 1)
+
+        where = self.position.xpos, self.position.ypos
+        blittedRect = surface.blit(self.surface, where)
+        oldCenter = blittedRect.center
+        rotatedsurf = pygame.transform.rotate(self.surface, -angle)
+        rotrect = rotatedsurf.get_rect()
+        rotrect.center = oldCenter
+        surface.blit(rotatedsurf, rotrect)
