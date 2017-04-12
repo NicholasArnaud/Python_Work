@@ -18,6 +18,7 @@ class GameTemplate(object):
         self.agentlist = []
         self.leftclick = False
         self.rightclick = False
+        self.goalpos = True
         for i in range(0, 1):
             self.agentlist.append(agent(200, Vector([5, i * 5])))
 
@@ -33,15 +34,18 @@ class GameTemplate(object):
         self.delta_time = self.c.tick(30) / 1000.0
         mouse_pos = game.mouse.get_pos()
         if self.leftclick is False and self.rightclick is False:
+            self.goalpos = False
             for i in self.agentlist:
-                i.update_force(i.wandering(20, 30)* 10, self.delta_time)
-                print str(i._force)
+                i.update_force(i.wandering(20, 20) * 3, self.delta_time)
+                print(i._force)
 
         elif self.leftclick is True:
+            self.goalpos = True
             for i in self.agentlist:
                 i.update_force(i.seeking(self.goal), self.delta_time)
 
         elif self.rightclick is True:
+            self.goalpos = True
             for i in self.agentlist:
                 i.update_force(i.fleeing(self.goal), self.delta_time)
 
@@ -70,7 +74,7 @@ class GameTemplate(object):
         '''base draw'''
         self.screen.fill(BLACK)
         for i in self.agentlist:
-            agent.draw(i, self.screen, RED)
+            agent.draw(i, self.screen, RED, self.goalpos)
         game.display.flip()
 
     def _shutdown(self):

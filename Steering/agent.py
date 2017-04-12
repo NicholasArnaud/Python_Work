@@ -69,9 +69,9 @@ class agent(object):
         self.position += self._velocity * deltatime
 
 
-    def draw(self, surface, color):
+    def draw(self, surface, color, goal):
         '''draws agent when called'''
-        
+
 
         angle = math.atan2(self._velocity.ypos, self._velocity.xpos) * 180 / math.pi
         if angle < 0:
@@ -88,9 +88,9 @@ class agent(object):
         pygame.draw.line(surface, CYAN, (self.position.xpos + 10, self.position.ypos + 10),
                          (self._velocity.xpos + self.position.xpos,
                           self._velocity.ypos + self.position.ypos), 1)
-
-        #pygame.draw.line(surface, YELLOW, (self.position.xpos + 10, self.position.ypos + 10),
-        #                 (self._forward.xpos, self._forward.ypos), 1)
+        if goal is True:
+            pygame.draw.line(surface, YELLOW, (self.position.xpos + 10, self.position.ypos + 10),
+                             (self._forward.xpos, self._forward.ypos), 1)
 
         where = self.position.xpos, self.position.ypos
         blittedRect = surface.blit(self.surface, where)
