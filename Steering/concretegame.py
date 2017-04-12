@@ -11,11 +11,6 @@ class ConcreteGame(GameTemplate):
         self._name = name
         self._gameobjects = []
 
-
-    def addtobatch(self, gameobject):
-        '''add gameobjects to this game'''
-        self._gameobjects.append(gameobject)
-
     def update(self):
         '''update this games logic'''
         if not super(ConcreteGame, self)._update():
